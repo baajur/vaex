@@ -2,6 +2,7 @@ import vaex.serialize
 import json
 import numpy as np
 import pyarrow as pa
+import pyarrow.compute as pc
 from vaex import column
 from vaex.column import _to_string_sequence, _to_string_column, _to_string_list_sequence, _is_stringy
 import re
@@ -1048,7 +1049,8 @@ def str_contains(x, pattern, regex=True):
     3  False
     4  False
     """
-    return _to_string_sequence(x).search(pattern, regex)
+    assert regex is False
+    return pc.binary_contains_exact(x, pattern)
 
 # TODO: default regex is False, which breaks with pandas
 @register_function(scope='str')
@@ -1382,8 +1384,7 @@ def str_lower(x):
     3          our
     4         way.
     """
-    sl = _to_string_sequence(x).lower()
-    return column.ColumnStringArrow.from_string_sequence(sl)
+    return pc.utf8_lower(x)
 
 
 @register_function(scope='str')
@@ -1891,8 +1892,7 @@ def str_upper(x):
     4         WAY.
 
     """
-    sl = _to_string_sequence(x).upper()
-    return column.ColumnStringArrow.from_string_sequence(sl)
+    return pc.utf8_upper(x)
 
 
 # TODO: wrap, is*, get_dummies(maybe?)

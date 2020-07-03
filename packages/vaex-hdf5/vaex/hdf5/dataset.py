@@ -338,8 +338,7 @@ class Hdf5MemoryMapped(DatasetMemoryMapped):
                             null_bitmap = self._map_hdf5_array(column['null_bitmap'])
                         else:
                             null_bitmap = None
-                        from vaex.column import ColumnStringArrow
-                        self.add_column(column_name, ColumnStringArrow(indices, bytes, null_bitmap=null_bitmap))
+                        self.add_column(column_name, vaex.arrow.convert.arrow_binary_array_from_buffers(bytes, indices, null_bitmap))
                     else:
                         shape = data.shape
                         if True:  # len(shape) == 1:

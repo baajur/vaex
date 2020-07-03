@@ -147,8 +147,9 @@ def dfs_arrow(tmp_path_factory):
     tmpdir = tmp_path_factory.mktemp("vaex")
     path = str(tmpdir / 'strings.hdf5')
     df = vaex.from_arrays(s=vaex.string_column(string_list), sr=vaex.string_column(string_list_reverse))
-    df.export(path)  # we write it out so that the memory is read only
-    return vaex.open(path)
+    # df.export(path)  # we write it out so that the memory is read only
+    # return vaex.open(path)
+    return df
 
 
 def test_null_values():

@@ -53,6 +53,11 @@ def arrow_array_from_numpy_array(array):  # TODO: -=> rename with ensure
 from vaex.dataframe import Column
 
 
+def arrow_binary_array_from_buffers(bytes, offsets, null_bitmap):
+    column = vaex.column.ColumnStringArrow(offsets, bytes, null_bitmap=null_bitmap)
+    return pa.array(column)
+
+
 def column_from_arrow_array(arrow_array):
     # TODO: we may be able to pass chunked arrays
     arrow_array = ensure_not_chunked(arrow_array)
